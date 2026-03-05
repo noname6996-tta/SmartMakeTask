@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS DailyCompletion (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    dailyTaskId INTEGER NOT NULL,
+    completedDate TEXT NOT NULL,
+    FOREIGN KEY (dailyTaskId) REFERENCES DailyTask(id) ON DELETE CASCADE
+);
+
+-- Queries
+
+getCompletionsForTask:
+SELECT * FROM DailyCompletion WHERE dailyTaskId = ? ORDER BY completedDate DESC;
+
+getCompletionForDate:
+SELECT * FROM DailyCompletion WHERE dailyTaskId = ? AND completedDate = ?;
+
+getCompletedTodayCount:
+SELECT COUNT(DISTINCT dailyTaskId) FROM DailyCompletion WHERE completedDate = ?;
+
+insertCompletion:
+INSERT INTO DailyCompletion(dailyTaskId, completedDate) VALUES (?, ?);
+
+deleteCompletion:
+DELETE FROM DailyCompletion WHERE dailyTaskId = ? AND completedDate = ?;
+
+deleteCompletionsForTask:
+DELETE FROM DailyCompletion WHERE dailyTaskId = ?;

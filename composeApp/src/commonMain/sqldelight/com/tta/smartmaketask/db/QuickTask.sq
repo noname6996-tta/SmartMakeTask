@@ -1,0 +1,42 @@
+CREATE TABLE IF NOT EXISTS QuickTask (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    isUrgent INTEGER NOT NULL DEFAULT 0,
+    isImportant INTEGER NOT NULL DEFAULT 0,
+    quadrant TEXT NOT NULL DEFAULT 'ELIMINATE',
+    dueDate TEXT,
+    status TEXT NOT NULL DEFAULT 'TODO',
+    createdAt INTEGER NOT NULL,
+    completedAt INTEGER
+);
+
+-- Queries
+
+getAllQuickTasks:
+SELECT * FROM QuickTask ORDER BY createdAt DESC;
+
+getQuickTaskById:
+SELECT * FROM QuickTask WHERE id = ?;
+
+getQuickTasksByQuadrant:
+SELECT * FROM QuickTask WHERE quadrant = ? AND status != 'COMPLETED' ORDER BY createdAt DESC;
+
+getPendingQuickTaskCount:
+SELECT COUNT(*) FROM QuickTask WHERE status != 'COMPLETED';
+
+getCompletedTodayQuickTaskCount:
+SELECT COUNT(*) FROM QuickTask WHERE completedAt >= ? AND completedAt < ?;
+
+insertQuickTask:
+INSERT INTO QuickTask(title, description, isUrgent, isImportant, quadrant, dueDate, status, createdAt, completedAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateQuickTask:
+UPDATE QuickTask SET title = ?, description = ?, isUrgent = ?, isImportant = ?, quadrant = ?, dueDate = ?, status = ? WHERE id = ?;
+
+completeQuickTask:
+UPDATE QuickTask SET status = 'COMPLETED', completedAt = ? WHERE id = ?;
+
+deleteQuickTask:
+DELETE FROM QuickTask WHERE id = ?;

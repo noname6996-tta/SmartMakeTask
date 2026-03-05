@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS DailyTask (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL DEFAULT '',
+    reminderHour INTEGER,
+    reminderMinute INTEGER,
+    currentStreak INTEGER NOT NULL DEFAULT 0,
+    longestStreak INTEGER NOT NULL DEFAULT 0,
+    lastCompletedDate TEXT,
+    createdAt INTEGER NOT NULL
+);
+
+-- Queries
+
+getAllDailyTasks:
+SELECT * FROM DailyTask ORDER BY createdAt DESC;
+
+getDailyTaskById:
+SELECT * FROM DailyTask WHERE id = ?;
+
+getDailyTaskCount:
+SELECT COUNT(*) FROM DailyTask;
+
+insertDailyTask:
+INSERT INTO DailyTask(title, description, reminderHour, reminderMinute, currentStreak, longestStreak, lastCompletedDate, createdAt)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+updateDailyTask:
+UPDATE DailyTask SET title = ?, description = ?, reminderHour = ?, reminderMinute = ? WHERE id = ?;
+
+updateDailyTaskStreak:
+UPDATE DailyTask SET currentStreak = ?, longestStreak = ?, lastCompletedDate = ? WHERE id = ?;
+
+deleteDailyTask:
+DELETE FROM DailyTask WHERE id = ?;
